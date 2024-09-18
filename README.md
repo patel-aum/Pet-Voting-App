@@ -79,8 +79,8 @@ kubectl get all
 Port-forward the services:
 
 ```bash
-kubectl port-forward service/vote 5000:5000 --address=0.0.0.0 &
-kubectl port-forward service/result 5001:5001 --address=0.0.0.0 &
+kubectl port-forward service/vote 5000:5000 --address=0.0.0.0 > /dev/null 2>&1 &
+kubectl port-forward service/result 5001:5001 --address=0.0.0.0 > /dev/null 2>&1 &
 ```
 
 ## 5. Set Up Argo CD
@@ -112,7 +112,7 @@ kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"}}'
 Forward ports to access Argo CD:
 
 ```bash
-kubectl port-forward -n argocd service/argocd-server 8443:443 &
+kubectl port-forward -n argocd service/argocd-server 8443:443 > /dev/null 2>&1 &
 ```
 
 Retrieve the Argo CD admin password:
@@ -127,6 +127,7 @@ Deploy Kubernetes dashboard:
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+kubectl apply -f sa.yaml
 ```
 
 Create a token for dashboard access:
@@ -184,13 +185,13 @@ kubectl get svc -n monitoring
 Port-forward Prometheus:
 
 ```bash
-kubectl port-forward svc/kind-prometheus-kube-prome-prometheus -n monitoring 9090:9090 --address=0.0.0.0 &
+kubectl port-forward svc/kind-prometheus-kube-prome-prometheus -n monitoring 9090:9090 --address=0.0.0.0 > /dev/null 2>&1 &
 ```
 
 Port-forward Grafana:
 
 ```bash
-kubectl port-forward svc/kind-prometheus-grafana -n monitoring 31000:80 --address=0.0.0.0 &
+kubectl port-forward svc/kind-prometheus-grafana -n monitoring 31000:80 --address=0.0.0.0 > /dev/null 2>&1 &
 ```
 
 This setup will provide you with a local Kubernetes cluster using KIND, along with monitoring via Prometheus and Grafana, and automation via Argo CD.
